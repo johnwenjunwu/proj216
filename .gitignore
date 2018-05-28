@@ -1,0 +1,6 @@
+# Large File (>100MB)
+bgptable.txt
+result.txt
+
+# MAC OS
+.DS_Store
