@@ -77,8 +77,6 @@ public class Bitmap extends Trie {
         }
     }
 
-
-
     public boolean lookupEntry(String ip) {
         if (ip == null) return false;
         int level = 0;

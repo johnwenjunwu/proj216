@@ -18,8 +18,10 @@ import java.util.HashMap;
 
 public class TreeBitmap extends Trie {
 
+    final String rootMatch = "0/0";
     int[] stride;
     TreeNode rootNode;
+
 
     public TreeBitmap(String BGPTablePath, String IPTablePath, boolean modified) {
         super(BGPTablePath, IPTablePath, modified);
@@ -44,19 +46,30 @@ public class TreeBitmap extends Trie {
             children = new HashMap<>();
             this.stride = stride;
             this.level = level;
-            this.endNode = false;
+            this.endNode = true;
             this.internalBitmapSize = (int)Math.pow(2, stride) - 1;
             this.externalBitmapSize = (int)Math.pow(2, stride);
             this.ptrSize = 2 * PointerSize;
-            if (stride > 0) increaseMemory(internalBitmapSize + externalBitmapSize + ptrSize);
-            if (stride < 0) endNode = true;
+        }
+
+        public void addChild(String index, TreeNode child) {
+            this.children.put(index, child);
+            notAEndNode();
         }
 
         public boolean addData(String prefix, String nextHopData) {
             if (data.containsKey(prefix)) return false;
             data.put(prefix, nextHopData);
             increaseMemory(dataNodeSize);
+            if (prefix != rootMatch || data.size() > 1) notAEndNode();
             return true;
+        }
+
+        public void notAEndNode() {
+            if (endNode) {
+                endNode = false;
+                increaseMemory(internalBitmapSize + externalBitmapSize + ptrSize);
+            }
         }
     }
 
@@ -107,7 +120,7 @@ public class TreeBitmap extends Trie {
         while (level < ipComponents.length - 1) {
             accessMemory(1); // read TreeNode
             if (!curNode.children.containsKey(ipComponents[level]))
-                curNode.children.put(ipComponents[level], new TreeNode(stride[level+1], level+1));
+                curNode.addChild(ipComponents[level], new TreeNode(stride[level+1], level+1));
             curNode = curNode.children.get(ipComponents[level++]);
         }
 
@@ -128,7 +141,7 @@ public class TreeBitmap extends Trie {
             String[] IPComponents = new String[length + 1];
             System.arraycopy(standardIPComponents, 0, IPComponents, 0, length);
             IPComponents[length - 1] = IPComponents[length - 1].substring(0, IPComponents[length - 1].indexOf('/'));
-            IPComponents[length] = "0/0";
+            IPComponents[length] = rootMatch;
             return IPComponents;
         }
         return standardIPComponents;
