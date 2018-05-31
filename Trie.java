@@ -2,7 +2,7 @@
  * Trie Simulator for CS-216
  *
  * @author Zhehan Li
- * @version 1.0
+ * @version 2.0
  * @since 2018.5.28
  *
  */
@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public abstract class Trie {
 
     final int expIPNum = 1000000;
-    final int dataNodeSize = 64; // 8-bytes
-    final int PointerSize = 26; // 26-bits each => 64MB
+    final int ptrSize = 26; // 26-bits each => 64MB
     final boolean verbose = true; // output every lookup result
 
+    int trieNodeNum;
     int expEntryNum;
     int memTotalAccess;
     long memTotalStorage;
@@ -30,6 +30,7 @@ public abstract class Trie {
     ArrayList<Long> memGrowth;
 
     public Trie(String BGPTablePath, String IPTablePath, boolean modified) {
+        this.trieNodeNum = 0;
         this.memTotalStorage = 0;
         this.memTotalAccess = 0;
         this.maskLength = new int[33];
@@ -110,6 +111,10 @@ public abstract class Trie {
         return ipComponents.toArray(new String[ipComponents.size()]);
     }
 
+    public void increaseNode() {
+        trieNodeNum++;
+    }
+
     public void accessMemory(int times) {
         memTotalAccess += times;
     }
@@ -147,6 +152,7 @@ public abstract class Trie {
             if (insertEntry(entry)) entryCount++;
 
             System.out.println(entryCount + " prefixes inserted. " + (entryCount == expEntryNum? "Match":"ERROR: Mismatch"));
+            System.out.println("Total Trie Node: " + trieNodeNum + " nodes");
             System.out.println("Total Memory Storage: " + memTotalStorage / 8 / 1024 + " KB");
             System.out.println("Total Memory Access: " + memTotalAccess + " times");
             if (verbose) {
