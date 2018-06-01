@@ -2,7 +2,7 @@
  * TreeBitmap Simulator for CS-216
  *
  * @author Zhehan Li
- * @version 3.0
+ * @version 4.0
  * @since 2018.5.27
  *
  * ref:
@@ -44,7 +44,7 @@ public class TreeBitmap extends Trie {
             data = new HashMap<>();
             children = new HashMap<>();
             this.level = level;
-            this.nullNode = true; // any node is by default null node [only contains "*"]
+            this.nullNode = true; // any node is by default null node [only contains "*" and its parent is not an end node]
             this.endNode = true; // any node is by default end node [all children are null node]
             this.parent = parent;
             this.internalBitmapSize = (int)Math.pow(2, stride[level]) - 1;
@@ -60,19 +60,27 @@ public class TreeBitmap extends Trie {
             if (data.containsKey(prefix)) return false;
             data.put(prefix, nextHopData);
             increaseMemory(ptrSize); // data/result pointer
-            if (prefix != rootMatch) notANullNode();
+            if (prefix != rootMatch || !endNode) notANullNode();
             return true;
         }
 
         public void notANullNode() {
             if (nullNode) {
                 nullNode = false;
-                if (parent != null) parent.endNode = false;
+                if (parent != null) parent.notAnEndNode();
                 increaseNode();
                 increaseMemory(internalBitmapSize + externalBitmapSize + 2 * ptrSize);
                 // Child Array Pointer + Result Array Pointer [2 x pointerSize]
             }
         }
+
+        public void notAnEndNode() {
+            if (endNode) {
+                endNode = false;
+                for (TreeNode child : children.values()) child.notANullNode();
+            }
+        }
+
     }
 
     public boolean lookupEntry(String ip) {
