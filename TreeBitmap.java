@@ -2,7 +2,7 @@
  * TreeBitmap Simulator for CS-216
  *
  * @author Zhehan Li
- * @version 2.0
+ * @version 3.0
  * @since 2018.5.27
  *
  * ref:
@@ -25,50 +25,52 @@ public class TreeBitmap extends Trie {
 
     public TreeBitmap(String BGPTablePath, String IPTablePath, boolean modified) {
         super(BGPTablePath, IPTablePath, modified);
-        this.stride = new int[super.stride.length + 1];
+        this.stride = new int[super.stride.length + 1]; //{8,8,8,8} => {8,8,8,8,0}; 0 deal with the end node
         System.arraycopy(super.stride, 0, this.stride, 0, super.stride.length);
-        this.stride[super.stride.length] = -1; //{8,8,8,8} => {8,8,8,8,-1}; -1 deal with the end node
-        this.rootNode = new TreeNode(stride[0], 0);
+        this.rootNode = new TreeNode(0, null);
     }
 
     public class TreeNode {
         HashMap<String, String> data;
         HashMap<String, TreeNode> children;
-        int stride;
         int level;
         int internalBitmapSize; // 2^stride - 1 [prefix bitmap]
         int externalBitmapSize; // 2^stride [child pointer bitmap]
-        int ptrSize; // Children Array Pointer + Result Array Pointer [2 x pointerSize]
-        boolean endNode; // endNode optimization: shrink the "null node" into the previous level
+        boolean nullNode; // nullNode -> endNode optimization:
+        boolean endNode; // shrink the "null node" into the previous level ("end node")
+        TreeNode parent;
 
-        public TreeNode(int stride, int level){
+        public TreeNode(int level, TreeNode parent){
             data = new HashMap<>();
             children = new HashMap<>();
-            this.stride = stride;
             this.level = level;
-            this.endNode = true;
-            this.internalBitmapSize = (int)Math.pow(2, stride) - 1;
-            this.externalBitmapSize = (int)Math.pow(2, stride);
-            this.ptrSize = 2 * PointerSize;
+            this.nullNode = true; // any node is by default null node [only contains "*"]
+            this.endNode = true; // any node is by default end node [all children are null node]
+            this.parent = parent;
+            this.internalBitmapSize = (int)Math.pow(2, stride[level]) - 1;
+            this.externalBitmapSize = (int)Math.pow(2, stride[level]);
         }
 
         public void addChild(String index, TreeNode child) {
-            this.children.put(index, child);
-            notAEndNode();
+            children.put(index, child);
+            notANullNode();
         }
 
         public boolean addData(String prefix, String nextHopData) {
             if (data.containsKey(prefix)) return false;
             data.put(prefix, nextHopData);
-            increaseMemory(dataNodeSize);
-            if (prefix != rootMatch || data.size() > 1) notAEndNode();
+            increaseMemory(ptrSize); // data/result pointer
+            if (prefix != rootMatch) notANullNode();
             return true;
         }
 
-        public void notAEndNode() {
-            if (endNode) {
-                endNode = false;
-                increaseMemory(internalBitmapSize + externalBitmapSize + ptrSize);
+        public void notANullNode() {
+            if (nullNode) {
+                nullNode = false;
+                if (parent != null) parent.endNode = false;
+                increaseNode();
+                increaseMemory(internalBitmapSize + externalBitmapSize + 2 * ptrSize);
+                // Child Array Pointer + Result Array Pointer [2 x pointerSize]
             }
         }
     }
@@ -79,24 +81,33 @@ public class TreeBitmap extends Trie {
         int memoryAccess = 0;
         TreeNode curNode = rootNode;
         String nextHopData = null;
+        String longestMatch = null;
         String[] ipComponents = calculateIPComponent(ip, 32);
 
         if (ipComponents == null) return false;
 
         while (true) {
-            memoryAccess++; // access child array
+            memoryAccess++; // access [two bitmaps]
             // find the best match for current trie node
-            String longestMatch = internalBestMatch(ipComponents[level], stride[level], curNode);
-            if (longestMatch != null) nextHopData = longestMatch;
+            longestMatch = internalBestMatch(ipComponents[level], stride[level], curNode);
+            if (longestMatch != null) {
+                memoryAccess++; // access [data array] and fetch the data pointer
+                nextHopData = longestMatch;
+            }
             // proceed to next level
             if (!curNode.children.containsKey(ipComponents[level])) break;
+            memoryAccess++; // access [child array]
             curNode = curNode.children.get(ipComponents[level]);
             level++;
         }
-        if (nextHopData != null) memoryAccess++; // access data
-        if (curNode.endNode) memoryAccess--; // No need to access the "null node" in last level only containing "*"
-
+        // No need to access the real "null node" in last level only containing "*"
+        if (curNode.nullNode && curNode.parent.endNode) memoryAccess -= 2; // access [two bitmaps] + [data array]
+        // No need to access the child array in the real "end node"
+        if (curNode.nullNode && curNode.parent.endNode) memoryAccess--; // access [child array]
+        // Need to access the data array in the real "end node" if we didn't do it in the "end node"
+        if (curNode.nullNode && curNode.parent.endNode && longestMatch == null) memoryAccess++; // access [data array]
         accessMemory(memoryAccess);
+
         if (verbose) {
             System.out.println("Look up IP address : " + ip + " => Memory Access: " + memoryAccess + " times");
             System.out.println("Next Hop Data: " + (nextHopData == null ? "Not Found" : nextHopData));
@@ -118,15 +129,13 @@ public class TreeBitmap extends Trie {
 
         // Follow the child pointers to the next level
         while (level < ipComponents.length - 1) {
-            accessMemory(1); // read TreeNode
             if (!curNode.children.containsKey(ipComponents[level]))
-                curNode.addChild(ipComponents[level], new TreeNode(stride[level+1], level+1));
+                curNode.addChild(ipComponents[level], new TreeNode(level+1, curNode));
             curNode = curNode.children.get(ipComponents[level++]);
         }
 
         // Add the next hop data
         String prefix = ipComponents[level];
-        accessMemory(2); // read TreeNode + write Data
         if (!curNode.addData(prefix, String.join(" ", fields))) return false;
         recordMemory();
         return true;
@@ -164,5 +173,3 @@ public class TreeBitmap extends Trie {
     }
 
 }
-
-
