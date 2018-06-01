@@ -50,7 +50,6 @@ public abstract class Trie {
 
             int ipCount = 0;
             String line = null;
-            memTotalAccess = 0;
 
             while((line = bufferedReader.readLine()) != null)
                 if (lookupEntry(line)) ipCount++;
@@ -154,10 +153,9 @@ public abstract class Trie {
             System.out.println(entryCount + " prefixes inserted. " + (entryCount == expEntryNum? "Match":"ERROR: Mismatch"));
             System.out.println("Total Trie Node: " + trieNodeNum + " nodes");
             System.out.println("Total Memory Storage: " + memTotalStorage / 8 / 1024 + " KB");
-            System.out.println("Total Memory Access: " + memTotalAccess + " times");
             if (verbose) {
                 System.out.println("\nMask Size Distribution:");
-                for (int i = 1, step = 8, sum = 0; i < maskLength.length; i += step, sum = 0) {
+                for (int i = 1, step = 4, sum = 0; i < maskLength.length; i += step, sum = 0) {
                     for (int j = i; j < i + step; ++j) sum += maskLength[j];
                     System.out.println("Length:" + i + "~" + (i + step - 1) + " => " + sum);
                 }
