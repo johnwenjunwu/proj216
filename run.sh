@@ -32,7 +32,7 @@ echo "=============================================================="
 echo
 
 if [ ${1:(-4)} == "java" ]; then
-  JAVA_CLASS=${1:0:(-5)}
+  JAVA_CLASS=${1:0:${#1}-5}
 else
   echo "Should Append .java As Suffix!"
   exit 1
