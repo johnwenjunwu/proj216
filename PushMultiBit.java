@@ -29,7 +29,7 @@ class PushMultiBit extends Trie {
         String[] ipComponents = calculateIPComponent(ip, 32);
         if (ipComponents == null) return false;
 
-        while(true){
+        while(level<ipComponents.length){
             int ipValue;
             if(ipComponents[level].indexOf('/')!=-1){
                 ipValue = Integer.valueOf(ipComponents[level].split("/")[0]);
@@ -88,41 +88,30 @@ class PushMultiBit extends Trie {
         String strs[] = prefix.split("/");
         int diff = STRIDE-Integer.valueOf(strs[1]);
         int basic = Integer.valueOf(strs[0])<< diff;
-       
+        int extend = basic;
 
-        for(int extend = basic; extend<((int)Math.pow(2, diff));extend++){
+        for(int i= 0; i<((int)Math.pow(2, diff));i++){
+            extend = basic+i;
         // for(int extend :extension(prefix)){
-            // if(cur.pointer[extend]!=null && cur.pointer[extend].prefix!=null){
-            //     if(Integer.valueOf(cur.pointer[extend].prefix.split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
-            //         cur.pointer[extend].prefix = prefix;
-            //         cur.pointer[extend].nexthoop = entry;
-                    
-            //     }
-            // }
-            // else {
-            //     cur.pointer[extend] = new Node();
-            //     increaseNode();
-            //     increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
-            //     cur.pointer[extend].prefix = prefix;
-            //     cur.pointer[extend].nexthoop = entry;
-              
-            // }
             if(cur.pointer[extend]==null){
                 cur.pointer[extend] = new Node();
                 increaseNode();
                 increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
                 cur.pointer[extend].prefix = prefix;
-                cur.pointer[extend].nexthoop = entry;
+                cur.pointer[extend].nexthoop = String.join(" ", fields);
+                recordMemory();
             }else{
                 if(cur.pointer[extend].prefix!=null){
                     if(Integer.valueOf(cur.pointer[extend].prefix.split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
                         cur.pointer[extend].prefix = prefix;
-                        cur.pointer[extend].nexthoop = entry;
+                        cur.pointer[extend].nexthoop = String.join(" ", fields);
+                        recordMemory();
                         
                     }
                 }else{
                     cur.pointer[extend].prefix = prefix;
-                    cur.pointer[extend].nexthoop = entry;
+                    cur.pointer[extend].nexthoop = String.join(" ", fields);
+                    recordMemory();
                 }
             }
           
