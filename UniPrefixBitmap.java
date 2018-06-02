@@ -1,19 +1,19 @@
 /**
- * Bitmap (Lulea Scheme + push data to next level) Simulator for CS-216
+ * UniPrefix UniPrefixBitmap (Lulea Scheme + push data to next level + End node optimization) Simulator for CS-216
  *
  * @author Zhehan Li
- * @version 2.0
+ * @version 3.0
  * @since 2018.5.28
  *
  */
 
-public class Bitmap extends Trie {
+public class UniPrefixBitmap extends Trie {
 
     int mode = 0; // mode = 0: all compress, mode = 1: endnode compress
     int[] stride;
     TreeNode rootNode;
 
-    public Bitmap(String BGPTablePath, String IPTablePath, boolean modified) {
+    public UniPrefixBitmap(String BGPTablePath, String IPTablePath, boolean modified) {
         super(BGPTablePath, IPTablePath, modified);
         this.stride = new int[super.stride.length + 1];  //{8,8,8,8} => {8,8,8,8,0}; 0 deal with the end node
         System.arraycopy(super.stride, 0, this.stride, 0, super.stride.length);
