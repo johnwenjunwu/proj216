@@ -1,9 +1,13 @@
 # Large File (>100MB)
 bgptable.txt
-result*.txt
+*result*.txt
 
 # MAC OS
 .DS_Store
 
 # Class File
 *.class
+
+# Keep sample test set
+!sample_bgptable.txt
+!sample_result.txt
