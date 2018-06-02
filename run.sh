@@ -47,7 +47,7 @@ mkdir ${TMP_DIR}
 cp ${JAVA_FILE} ${TMP_DIR}
 
 # compile java source file
-echo "Compiling $1.Java..."
+echo "Compiling $1.java..."
 javac ${TMP_DIR}${JAVA_FILE}
 if [ "$?" -ne "0" ]; then
     echo "ERROR: Compilation Failed" 1>&2
@@ -56,7 +56,7 @@ if [ "$?" -ne "0" ]; then
 fi
 
 # run the java executable file
-echo "Testing $1.Java..."
+echo "Testing $1.java..."
 java -classpath ${TMP_DIR} ${JAVA_ENTRY} $1 ${BGP_TABLE} ${IP_TABLE} ${MODIFIED} > ${RES_FILE}
 
 # clean up
