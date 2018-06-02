@@ -17,10 +17,10 @@
 * Internal Nodes + End Nodes: 25349
 * Best Size: 4497KB -> 31998 nodes [Shrink all real null nodes and keep psuduo null nodes]
 
-## UniPrefix Simulator
+## UniPrefix Bitmap Simulator
 
 ```
-./run.sh Bitmap [-t]
+./run.sh UniPrefixBitmap [-t]
 ```
 * Internal Nodes + End Nodes + Pseudo Null Nodes + Real Null Nodes: 4049552
 * Internal Nodes + End Nodes + Pseduo Null Nodes: 107743
