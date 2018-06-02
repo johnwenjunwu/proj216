@@ -160,7 +160,7 @@ public abstract class Trie {
                     System.out.println("Length:" + i + "~" + (i + step - 1) + " => " + sum);
                 }
                 System.out.println("\nMemory Growth Record:");
-                for (int step = 100000, i = step; i < entryCount; i += step)
+                for (int step = 100000, i = step; i < memGrowth.size(); i += step)
                     System.out.println("Inserting " + i + " entries => " + memGrowth.get(i) / 1024 + " KB");
             }
 
