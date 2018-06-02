@@ -9,34 +9,40 @@ BGP_TABLE=bgptable.txt
 BGP_ADDRESS=http://bgp.potaroo.net/as2.0/bgptable.txt
 
 IP_TABLE=MillionIPAddrOutput.txt
-TEST_TABLE=test.txt
 RES_FILE=result.txt
 
-MODIFIED=false
+SAMPLE_BGP=sample_bgptable.txt
+SAMPLE_RES=sample_result.txt
 
+echo
 echo "Usage:"
-echo "The program use [${BGP_TABLE}] to build Trie Tree"
-echo "./run.sh [ClassName]    will look up every IP address in [${IP_TABLE}]"
-echo "./run.sh [ClassName] -t will look up every IP address in [${TEST_TABLE}]"
-echo "ClassName: MultiBit/Bitmap/TreeBitmap"
-echo "e.g. [./run.sh TreeBitmap -t] will be a valid command"
+echo "./run.sh [ClassName].java will run the program on real data set"
+echo "=> [${BGP_TABLE}] to build Trie Tree, [{$IP_TABLE} to look up]"
+echo "ClassName: MultiBit | UniPrefixMultibit | TreeBitmap | UniPrefixBitmap"
+echo
+echo "e.g. [./run.sh TreeBitmap.java] will be a valid command"
 echo "The results are saved in [${RES_FILE}]"
 echo
 
-if [ $# != 1 -a $# != 2 ] ; then
+if [ ${1:(-4)} == "java" ]; then
+  JAVA_CLASS=${1:0:(-5)}
+else
+  echo "Should Append .java As Suffix!"
+  exit 1
+fi
+
+if [ $# != 1 -a $# != 2 ]; then
   echo "Wrong Parameter"
   exit 1
 fi
 
-# download bgptable if necessary
-if [ ! -f "${BGP_TABLE}" ]; then
-  echo "Downloading ${BGP_TABLE}..."
-  wget -q -O ${BGP_TABLE} ${BGP_ADDRESS}
-fi
-
 # choose the loopup table
 if [ "$2" == "-t" -o "$2" == "-test" ]; then
-  IP_TABLE=${TEST_TABLE}
+  BGP_TABLE=${SAMPLE_BGP}
+# download bgptable if necessary
+elif [ ! -f "${BGP_TABLE}" ]; then
+  echo "Downloading ${BGP_TABLE}..."
+  wget -q -O ${BGP_TABLE} ${BGP_ADDRESS}
 fi
 
 # clean any existing files
@@ -47,7 +53,7 @@ mkdir ${TMP_DIR}
 cp ${JAVA_FILE} ${TMP_DIR}
 
 # compile java source file
-echo "Compiling $1.java..."
+echo "Compiling $1..."
 javac ${TMP_DIR}${JAVA_FILE}
 if [ "$?" -ne "0" ]; then
     echo "ERROR: Compilation Failed" 1>&2
@@ -56,8 +62,19 @@ if [ "$?" -ne "0" ]; then
 fi
 
 # run the java executable file
-echo "Testing $1.java..."
-java -classpath ${TMP_DIR} ${JAVA_ENTRY} $1 ${BGP_TABLE} ${IP_TABLE} ${MODIFIED} > ${RES_FILE}
+echo "Testing $1..."
+java -classpath ${TMP_DIR} ${JAVA_ENTRY} ${JAVA_CLASS} ${BGP_TABLE} ${IP_TABLE} > ${RES_FILE}
+
+# compare with the sample result if necessary
+if [ "$2" == "-t" -o "$2" == "-test" ]; then
+  diff ${RES_FILE} ${SAMPLE_RES} | grep -q "Next Hop Data"
+  if [ "$?" -ne "0" ]; then
+    echo "Look Up Result Correct!"
+  else
+    echo "Look Up Result Wrong!"
+    echo "Run [diff ${RES_FILE} ${SAMPLE_RES}] to See the Difference"
+  fi
+fi
 
 # clean up
 rm -rf ${TMP_DIR}
