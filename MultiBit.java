@@ -16,7 +16,7 @@ class MultiBit extends Trie {
         this.stride = new int[] {8,8,8,8};
     }
 
-    
+
 
 
     private class Node {
@@ -51,18 +51,18 @@ class MultiBit extends Trie {
             String longestMatch = internalBestMacth(ipValue,curNode);
             if(longestMatch!=null) {
                 memoryAccess++;
-                //fetch the data 
+                //fetch the data
                 nextHopData = longestMatch;
             }
             if(curNode.pointer[ipValue]==null)break;
             memoryAccess++;//access pointer array
             curNode = curNode.pointer[ipValue];
             level++;
-            
+
         }
         System.out.println("Look up IP address : " + ip + " => Memory Access: " + memoryAccess + " times");
         System.out.println("Next Hop Data: " + (nextHopData == null ? "Not Found" : nextHopData));
-    
+
 
         return true;
 
@@ -71,7 +71,7 @@ class MultiBit extends Trie {
         if(curNode.prefix[ipValue]!=null) {
             if (curNode.data.containsKey(curNode.prefix[ipValue]))
             return curNode.data.get(curNode.prefix[ipValue]);
-        } 
+        }
          return null;
     }
 
@@ -123,7 +123,7 @@ class MultiBit extends Trie {
 
 
     public void display(){
-        
+
         Queue<Node> queue = new LinkedList<>();
         Queue<Integer> id = new LinkedList<>();
         queue.offer(root);
@@ -134,22 +134,22 @@ class MultiBit extends Trie {
             int n = id.poll();
             System.out.println();
             System.out.println("Node:"+n);
-            
-           
-            
+
+
+
             for(int i =0;i<(int)Math.pow(2, STRIDE);i++){
                 System.out.print(i);
                 System.out.print(":");
                 if(tmp.prefix[i]==null) System.out.print("NULL");
                 else System.out.print(tmp.prefix[i]+"*");
 
-                
+
                 if(tmp.pointer[i]!=null) {
                     queue.offer(tmp.pointer[i]);
                     num++;
                     id.offer(num);
                     System.out.print("|Point to:Node" +num);
-                    
+
                 }else{
                     System.out.print("|Point to:Null");
                 }
@@ -160,43 +160,5 @@ class MultiBit extends Trie {
 
         }
     }
-
-    public int calculateMask(String prefix) {
-        String[] str = prefix.split("/");
-        if (str.length == 2) return Integer.valueOf(str[1]);
-        int topAddress = Integer.valueOf(prefix.substring(0, prefix.indexOf('.')));
-        if (prefix.endsWith(".0.0.0") && topAddress < 128) return 8; // class A;
-        if (prefix.endsWith(".0.0") && topAddress >= 128 && topAddress < 192) return 16; // class B;
-        if (prefix.endsWith(".0") && topAddress >= 192 && topAddress < 224) return 24; // class C;
-        return -1;
-    }
-
-   // "1.2.255.4/16" -> "1","2/8"
-    // "1.2.255.4/17" -> "1","2","1/1"
-    // "1.2.255.4/18" -> "1","2","3/2"
-    // "1.2.255.4/19" -> "1","2","7/3"
-    // "1.2.255.4/23" -> "1","2","127/7"
-    // "1.0.255.4/24" -> "1","0","255/8"
-    public String[] calculateIPComponent(String prefix, int maskBits) {
-        String[] str = prefix.split("/");
-        if (str.length == 2) prefix = str[0];
-        str = prefix.split("\\.");
-        if (str.length != 4) return null;
-
-        int level = 0;
-        long IPAddress = 0;
-        int leadingZero = -1;
-        int shiftAmount = 32;
-        ArrayList<String> ipComponents = new ArrayList<>();
-        for (int i = 0; i < 4; ++i) IPAddress = IPAddress * 256 + Long.valueOf(str[i]);
-
-        while (maskBits != 0) {
-            shiftAmount -= Math.min(stride[level], maskBits);
-            ipComponents.add(((IPAddress & leadingZero) >>> shiftAmount) + (maskBits > stride[level]? "": ("/" + maskBits)));
-            leadingZero >>>= stride[level];
-            maskBits -= Math.min(stride[level++], maskBits);
-        }
-        return ipComponents.toArray(new String[ipComponents.size()]);
-    }
+    
 }
-
