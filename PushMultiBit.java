@@ -4,33 +4,20 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 
-class MultiBit extends Trie {
+class PushMultiBit extends Trie {
     private static final int STRIDE = 8;
     int [] stride ;
     private Node root;
 
-
-    public MultiBit(String BGPTablePath, String IPTablePath, boolean modified) {
+    public PushMultiBit(String BGPTablePath, String IPTablePath, boolean modified) {
         super(BGPTablePath, IPTablePath, modified);
         this.root = new Node();
         this.stride = new int[] {8,8,8,8};
     }
-
-
-
-
     private class Node {
-        String[] prefix = new String [(int)Math.pow(2, STRIDE)];
+        String prefix = null;
         Node [] pointer = new Node [(int)Math.pow(2, STRIDE)];
-        HashMap<String, String> data=new HashMap<>();
-
-        public boolean addData(String prefix, String nextHopData) {
-            if (data.containsKey(prefix)) return false;
-            data.put(prefix, nextHopData);
-            // increaseMemory(dataNodeSize);
-            // if (prefix != rootMatch || data.size() > 1) notAEndNode();
-            return true;
-        }
+        String nexthoop = null;
     }
 
     public boolean lookupEntry(String ip){
@@ -51,27 +38,30 @@ class MultiBit extends Trie {
             String longestMatch = internalBestMacth(ipValue,curNode);
             if(longestMatch!=null) {
                 memoryAccess++;
-                //fetch the data
+                //fetch the data 
                 nextHopData = longestMatch;
             }
             if(curNode.pointer[ipValue]==null)break;
             memoryAccess++;//access pointer array
             curNode = curNode.pointer[ipValue];
             level++;
-
+            
         }
+
         System.out.println("Look up IP address : " + ip + " => Memory Access: " + memoryAccess + " times");
         System.out.println("Next Hop Data: " + (nextHopData == null ? "Not Found" : nextHopData));
-
+    
 
         return true;
 
     }
     public String internalBestMacth(int ipValue, Node curNode){
-        if(curNode.prefix[ipValue]!=null) {
-            if (curNode.data.containsKey(curNode.prefix[ipValue]))
-            return curNode.data.get(curNode.prefix[ipValue]);
-        }
+        if(curNode.pointer[ipValue]!=null) {
+            // if (curNode.data.containsKey(curNode.prefix[ipValue]))
+            // return curNode.data.get(curNode.prefix[ipValue]);
+            if(curNode.pointer[ipValue].nexthoop!=null)
+                return curNode.pointer[ipValue].nexthoop;
+        } 
          return null;
     }
 
@@ -88,7 +78,7 @@ class MultiBit extends Trie {
             if (cur.pointer[index]==null){
                 cur.pointer[index]= new Node();
                 increaseNode();
-                increaseMemory(ptrSize*(int)Math.pow(2, STRIDE)*2);
+                increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
             }
             cur = cur.pointer[index];
             level++;
@@ -96,15 +86,25 @@ class MultiBit extends Trie {
 
         String prefix = ipComponents[level];
         for(int extend :extension(prefix)){
-            if(cur.prefix[extend]!=null){
-                if(Integer.valueOf(cur.prefix[extend].split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
-                    cur.prefix[extend]=prefix;
+            if(cur.pointer[extend]!=null && cur.pointer[extend].prefix!=null){
+                if(Integer.valueOf(cur.pointer[extend].prefix.split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
+                    cur.pointer[extend].prefix = prefix;
+                    cur.pointer[extend].nexthoop = entry;
+                    
                 }
             }
-            else cur.prefix[extend]=prefix;
+            else {
+                cur.pointer[extend] = new Node();
+                increaseNode();
+                increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
+                cur.pointer[extend].prefix = prefix;
+                cur.pointer[extend].nexthoop = entry;
+              
+            }
+          
+            
         }
-        if (!cur.addData(prefix, String.join(" ", fields))) return false;
-        recordMemory();
+        
         return true;
     }
 
@@ -117,13 +117,9 @@ class MultiBit extends Trie {
             res[i]=basic+i;
         }
         return res;
-
-
     }
-
-
     public void display(){
-
+        
         Queue<Node> queue = new LinkedList<>();
         Queue<Integer> id = new LinkedList<>();
         queue.offer(root);
@@ -134,31 +130,29 @@ class MultiBit extends Trie {
             int n = id.poll();
             System.out.println();
             System.out.println("Node:"+n);
+            if(tmp.prefix==null) System.out.println("NULL");
+                else System.out.println(tmp.prefix);
 
-
-
+            if(tmp.nexthoop==null) System.out.println("NULL");
+            else System.out.println(tmp.nexthoop);
+           
+            
             for(int i =0;i<(int)Math.pow(2, STRIDE);i++){
-                System.out.print(i);
-                System.out.print(":");
-                if(tmp.prefix[i]==null) System.out.print("NULL");
-                else System.out.print(tmp.prefix[i]+"*");
-
-
+                
+       
                 if(tmp.pointer[i]!=null) {
                     queue.offer(tmp.pointer[i]);
                     num++;
                     id.offer(num);
-                    System.out.print("|Point to:Node" +num);
-
-                }else{
-                    System.out.print("|Point to:Null");
+                    System.out.print(i);
+                    System.out.println("|Point to:Node" +num);
+                    
                 }
-
-                System.out.println();
 
             }
 
         }
     }
-    
+
+
 }
