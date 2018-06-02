@@ -85,21 +85,45 @@ class PushMultiBit extends Trie {
         }
 
         String prefix = ipComponents[level];
-        for(int extend :extension(prefix)){
-            if(cur.pointer[extend]!=null && cur.pointer[extend].prefix!=null){
-                if(Integer.valueOf(cur.pointer[extend].prefix.split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
-                    cur.pointer[extend].prefix = prefix;
-                    cur.pointer[extend].nexthoop = entry;
+        String strs[] = prefix.split("/");
+        int diff = STRIDE-Integer.valueOf(strs[1]);
+        int basic = Integer.valueOf(strs[0])<< diff;
+       
+
+        for(int extend = basic; extend<((int)Math.pow(2, diff));extend++){
+        // for(int extend :extension(prefix)){
+            // if(cur.pointer[extend]!=null && cur.pointer[extend].prefix!=null){
+            //     if(Integer.valueOf(cur.pointer[extend].prefix.split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
+            //         cur.pointer[extend].prefix = prefix;
+            //         cur.pointer[extend].nexthoop = entry;
                     
-                }
-            }
-            else {
+            //     }
+            // }
+            // else {
+            //     cur.pointer[extend] = new Node();
+            //     increaseNode();
+            //     increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
+            //     cur.pointer[extend].prefix = prefix;
+            //     cur.pointer[extend].nexthoop = entry;
+              
+            // }
+            if(cur.pointer[extend]==null){
                 cur.pointer[extend] = new Node();
                 increaseNode();
                 increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
                 cur.pointer[extend].prefix = prefix;
                 cur.pointer[extend].nexthoop = entry;
-              
+            }else{
+                if(cur.pointer[extend].prefix!=null){
+                    if(Integer.valueOf(cur.pointer[extend].prefix.split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
+                        cur.pointer[extend].prefix = prefix;
+                        cur.pointer[extend].nexthoop = entry;
+                        
+                    }
+                }else{
+                    cur.pointer[extend].prefix = prefix;
+                    cur.pointer[extend].nexthoop = entry;
+                }
             }
           
             

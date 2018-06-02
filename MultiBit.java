@@ -15,6 +15,7 @@ class MultiBit extends Trie {
         this.root = new Node();
         this.stride = new int[] {8,8,8,8};
     }
+    
 
 
 
@@ -95,7 +96,12 @@ class MultiBit extends Trie {
         }
 
         String prefix = ipComponents[level];
-        for(int extend :extension(prefix)){
+        String strs[] = prefix.split("/");
+        int diff = STRIDE-Integer.valueOf(strs[1]);
+        int basic = Integer.valueOf(strs[0])<< diff;
+       
+
+        for(int extend = basic; extend<((int)Math.pow(2, diff));extend++){
             if(cur.prefix[extend]!=null){
                 if(Integer.valueOf(cur.prefix[extend].split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
                     cur.prefix[extend]=prefix;
