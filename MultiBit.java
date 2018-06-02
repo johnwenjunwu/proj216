@@ -10,12 +10,12 @@ class MultiBit extends Trie {
     private Node root;
 
 
-    public MultiBit(String BGPTablePath, String IPTablePath, boolean modified) {
-        super(BGPTablePath, IPTablePath, modified);
+    public MultiBit(String BGPTablePath, String IPTablePath) {
+        super(BGPTablePath, IPTablePath);
         this.root = new Node();
         this.stride = new int[] {8,8,8,8};
     }
-    
+
 
 
 
@@ -99,7 +99,7 @@ class MultiBit extends Trie {
         String strs[] = prefix.split("/");
         int diff = STRIDE-Integer.valueOf(strs[1]);
         int basic = Integer.valueOf(strs[0])<< diff;
-       
+
 
         for(int extend = basic; extend<((int)Math.pow(2, diff));extend++){
             if(cur.prefix[extend]!=null){
@@ -166,5 +166,5 @@ class MultiBit extends Trie {
 
         }
     }
-    
+
 }

@@ -9,8 +9,8 @@ class PushMultiBit extends Trie {
     int [] stride ;
     private Node root;
 
-    public PushMultiBit(String BGPTablePath, String IPTablePath, boolean modified) {
-        super(BGPTablePath, IPTablePath, modified);
+    public PushMultiBit(String BGPTablePath, String IPTablePath) {
+        super(BGPTablePath, IPTablePath);
         this.root = new Node();
         this.stride = new int[] {8,8,8,8};
     }
@@ -38,19 +38,19 @@ class PushMultiBit extends Trie {
             String longestMatch = internalBestMacth(ipValue,curNode);
             if(longestMatch!=null) {
                 memoryAccess++;
-                //fetch the data 
+                //fetch the data
                 nextHopData = longestMatch;
             }
             if(curNode.pointer[ipValue]==null)break;
             memoryAccess++;//access pointer array
             curNode = curNode.pointer[ipValue];
             level++;
-            
+
         }
 
         System.out.println("Look up IP address : " + ip + " => Memory Access: " + memoryAccess + " times");
         System.out.println("Next Hop Data: " + (nextHopData == null ? "Not Found" : nextHopData));
-    
+
 
         return true;
 
@@ -61,7 +61,7 @@ class PushMultiBit extends Trie {
             // return curNode.data.get(curNode.prefix[ipValue]);
             if(curNode.pointer[ipValue].nexthoop!=null)
                 return curNode.pointer[ipValue].nexthoop;
-        } 
+        }
          return null;
     }
 
@@ -106,7 +106,7 @@ class PushMultiBit extends Trie {
                         cur.pointer[extend].prefix = prefix;
                         cur.pointer[extend].nexthoop = String.join(" ", fields);
                         recordMemory();
-                        
+
                     }
                 }else{
                     cur.pointer[extend].prefix = prefix;
@@ -114,10 +114,10 @@ class PushMultiBit extends Trie {
                     recordMemory();
                 }
             }
-          
-            
+
+
         }
-        
+
         return true;
     }
 
@@ -132,7 +132,7 @@ class PushMultiBit extends Trie {
         return res;
     }
     public void display(){
-        
+
         Queue<Node> queue = new LinkedList<>();
         Queue<Integer> id = new LinkedList<>();
         queue.offer(root);
@@ -148,18 +148,18 @@ class PushMultiBit extends Trie {
 
             if(tmp.nexthoop==null) System.out.println("NULL");
             else System.out.println(tmp.nexthoop);
-           
-            
+
+
             for(int i =0;i<(int)Math.pow(2, STRIDE);i++){
-                
-       
+
+
                 if(tmp.pointer[i]!=null) {
                     queue.offer(tmp.pointer[i]);
                     num++;
                     id.offer(num);
                     System.out.print(i);
                     System.out.println("|Point to:Node" +num);
-                    
+
                 }
 
             }

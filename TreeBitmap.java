@@ -23,8 +23,8 @@ public class TreeBitmap extends Trie {
     TreeNode rootNode;
 
 
-    public TreeBitmap(String BGPTablePath, String IPTablePath, boolean modified) {
-        super(BGPTablePath, IPTablePath, modified);
+    public TreeBitmap(String BGPTablePath, String IPTablePath) {
+        super(BGPTablePath, IPTablePath);
         this.stride = new int[super.stride.length + 1]; //{8,8,8,8} => {8,8,8,8,0}; 0 deal with the end node
         System.arraycopy(super.stride, 0, this.stride, 0, super.stride.length);
         this.rootNode = new TreeNode(0, null);

@@ -24,18 +24,16 @@ public abstract class Trie {
     long memTotalStorage;
     int[] maskLength;
     int[] stride;
-    boolean modified;
     String BGPTablePath;
     String IPTablePath;
     ArrayList<Long> memGrowth;
 
-    public Trie(String BGPTablePath, String IPTablePath, boolean modified) {
+    public Trie(String BGPTablePath, String IPTablePath) {
         this.trieNodeNum = 0;
         this.memTotalStorage = 0;
         this.memTotalAccess = 0;
         this.maskLength = new int[33];
         this.stride = new int[] {8,8,8,8};
-        this.modified = modified;
         this.BGPTablePath = BGPTablePath;
         this.IPTablePath = IPTablePath;
         this.memGrowth = new ArrayList<>();
@@ -186,8 +184,8 @@ public abstract class Trie {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        Constructor constructor = Class.forName(args[0]).getDeclaredConstructor(String.class, String.class, boolean.class);
-        Trie trie = (Trie) constructor.newInstance(args[1], args[2], args[3].equals("true"));
+        Constructor constructor = Class.forName(args[0]).getDeclaredConstructor(String.class, String.class);
+        Trie trie = (Trie) constructor.newInstance(args[1], args[2]);
         trie.start();
     }
 
