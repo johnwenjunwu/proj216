@@ -51,7 +51,8 @@ public abstract class Trie {
 
             while((line = bufferedReader.readLine()) != null)
                 if (lookupEntry(line)) ipCount++;
-            System.out.println("\n" + ipCount + " prefixes looked up. " + (ipCount == expIPNum? "Match":"ERROR: Mismatch"));
+            System.out.print("\n" + ipCount + " prefixes looked up. ");
+            System.out.println((ipCount == expIPNum || ipCount == expIPNum / 2)? "Match":"ERROR: Mismatch");
             System.out.println("Total Memory Access: " + memTotalAccess + " times");
 
             inputStream.close();

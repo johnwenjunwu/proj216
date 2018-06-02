@@ -12,16 +12,23 @@ IP_TABLE=MillionIPAddrOutput.txt
 RES_FILE=result.txt
 
 SAMPLE_BGP=sample_bgptable.txt
+SAMPLE_IP=sample_iptable.txt
 SAMPLE_RES=sample_result.txt
 
 echo
 echo "Usage:"
+echo
 echo "./run.sh [ClassName].java will run the program on real data set"
-echo "=> [${BGP_TABLE}] to build Trie Tree, [{$IP_TABLE} to look up]"
+echo "=> [${BGP_TABLE}] to build Trie Tree, [${IP_TABLE} to look up]"
+echo
+echo "./run.sh [ClassName].java -t will run the program on real data set"
+echo "=> [${SAMPLE_BGP}] to build Trie Tree, [${SAMPLE_IP} to look up]"
+echo
 echo "ClassName: MultiBit | UniPrefixMultibit | TreeBitmap | UniPrefixBitmap"
 echo
 echo "e.g. [./run.sh TreeBitmap.java] will be a valid command"
 echo "The results are saved in [${RES_FILE}]"
+echo "=============================================================="
 echo
 
 if [ ${1:(-4)} == "java" ]; then
@@ -39,6 +46,7 @@ fi
 # choose the loopup table
 if [ "$2" == "-t" -o "$2" == "-test" ]; then
   BGP_TABLE=${SAMPLE_BGP}
+  IP_TABLE=${SAMPLE_IP}
 # download bgptable if necessary
 elif [ ! -f "${BGP_TABLE}" ]; then
   echo "Downloading ${BGP_TABLE}..."
