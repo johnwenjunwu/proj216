@@ -90,6 +90,8 @@ class MultiBit extends Trie {
         int maskBits = calculateMask(fields[0]);
         String[] ipComponents = calculateIPComponent(fields[0], maskBits); // turn prefix into array of n*[child index]+[data index]
         if (maskBits == -1 || ipComponents == null) return false;
+        maskLength[maskBits]++; // record mask length distribution
+
         Node cur = root;
         int level =0;
         while(level<ipComponents.length-1){
