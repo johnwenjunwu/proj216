@@ -4,12 +4,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 
-class PushMultiBit extends Trie {
+class UniPrefixMultibit extends Trie {
     private static final int STRIDE = 8;
     int [] stride ;
     private Node root;
 
-    public PushMultiBit(String BGPTablePath, String IPTablePath) {
+    public UniPrefixMultibit(String BGPTablePath, String IPTablePath) {
         super(BGPTablePath, IPTablePath);
         this.root = new Node();
         this.stride = new int[] {8,8,8,8};
