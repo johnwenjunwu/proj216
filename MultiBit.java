@@ -21,9 +21,17 @@ class MultiBit extends Trie {
 
 
     private class Node {
-        String[] prefix = new String [(int)Math.pow(2, STRIDE)];
-        Node [] pointer = new Node [(int)Math.pow(2, STRIDE)];
-        HashMap<String, String> data=new HashMap<>();
+        String[] prefix ;
+        Node [] pointer ;
+        HashMap<String, String> data;
+
+        Node(){
+            prefix = new String [(int)Math.pow(2, STRIDE)];
+            pointer = new Node [(int)Math.pow(2, STRIDE)];
+            data = new HashMap<>();
+            increaseNode();
+            increaseMemory(ptrSize*(int)Math.pow(2, STRIDE)*2);
+        }
 
         public boolean addData(String prefix, String nextHopData) {
             if (data.containsKey(prefix)) return false;
@@ -88,8 +96,7 @@ class MultiBit extends Trie {
             int index = Integer.valueOf(ipComponents[level]);
             if (cur.pointer[index]==null){
                 cur.pointer[index]= new Node();
-                increaseNode();
-                increaseMemory(ptrSize*(int)Math.pow(2, STRIDE)*2);
+
             }
             cur = cur.pointer[index];
             level++;
@@ -100,8 +107,10 @@ class MultiBit extends Trie {
         int diff = STRIDE-Integer.valueOf(strs[1]);
         int basic = Integer.valueOf(strs[0])<< diff;
 
+        int extend = basic;
 
-        for(int extend = basic; extend<((int)Math.pow(2, diff));extend++){
+        for(int i= 0; i<((int)Math.pow(2, diff));i++){
+            extend = basic+i;
             if(cur.prefix[extend]!=null){
                 if(Integer.valueOf(cur.prefix[extend].split("/")[1])<Integer.valueOf(prefix.split("/")[1])){
                     cur.prefix[extend]=prefix;

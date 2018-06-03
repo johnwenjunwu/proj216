@@ -14,10 +14,19 @@ class PushMultiBit extends Trie {
         this.root = new Node();
         this.stride = new int[] {8,8,8,8};
     }
+    
     private class Node {
-        String prefix = null;
-        Node [] pointer = new Node [(int)Math.pow(2, STRIDE)];
-        String nexthoop = null;
+        String prefix ;
+        Node [] pointer;
+        String nexthoop;
+
+        Node(){
+            prefix = null;
+            pointer = new Node [(int)Math.pow(2, STRIDE)];
+            nexthoop =null;
+            increaseNode();
+            increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
+        }
     }
 
     public boolean lookupEntry(String ip){
@@ -77,8 +86,6 @@ class PushMultiBit extends Trie {
             int index = Integer.valueOf(ipComponents[level]);
             if (cur.pointer[index]==null){
                 cur.pointer[index]= new Node();
-                increaseNode();
-                increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
             }
             cur = cur.pointer[index];
             level++;
@@ -95,8 +102,6 @@ class PushMultiBit extends Trie {
         // for(int extend :extension(prefix)){
             if(cur.pointer[extend]==null){
                 cur.pointer[extend] = new Node();
-                increaseNode();
-                increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
                 cur.pointer[extend].prefix = prefix;
                 cur.pointer[extend].nexthoop = String.join(" ", fields);
                 recordMemory();
