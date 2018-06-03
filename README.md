@@ -41,13 +41,12 @@
 ```
 ./run.sh MultiBit [-t]
 ```
-* Total Trie Node: 25298 nodes
-* Total Memory Storage: 41109 KB
-
+* Total Trie Node: 25349 nodes
+* Total Memory Storage: 41192 KB
 ## UniPrefixMultibit Simulator 
 
 ```
 ./run.sh UniPrefixMultibit [-t]
 ```
-* Total Trie Node: 4040151 nodes
-* Total Memory Storage: 3295445 KB
+* Total Trie Node: 4049552 nodes
+* Total Memory Storage: 3303113 KB
