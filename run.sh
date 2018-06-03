@@ -21,7 +21,7 @@ echo
 echo "./run.sh [ClassName].java will run the program on real data set"
 echo "=> [${BGP_TABLE}] to build Trie Tree, [${IP_TABLE} to look up]"
 echo
-echo "./run.sh [ClassName].java -t will run the program on real data set"
+echo "./run.sh [ClassName].java -t will run the program on sample data set"
 echo "=> [${SAMPLE_BGP}] to build Trie Tree, [${SAMPLE_IP} to look up]"
 echo
 echo "ClassName: MultiBit | UniPrefixMultibit | TreeBitmap | UniPrefixBitmap"
