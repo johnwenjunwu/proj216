@@ -17,6 +17,10 @@
 * Internal Nodes + End Nodes: 25349
 * Best Size: 4497KB -> 31998 nodes [Shrink all real null nodes and keep psuduo null nodes]
 
+
+* Total Trie Node: 31815 nodes
+* Total Memory Storage: 4486 KB
+
 ## UniPrefix Bitmap Simulator
 
 ```
@@ -29,10 +33,21 @@
 * Best Size: 3592 KB -> 25349 nodes [Shrink all null nodes in all level (mode 0)]
 * Best Size: 6538 KB -> 107743 nodes [Shrink all real null nodes and keep psudeo null nodes (mode 1)]
 
+* Total Memory Storage: 3592 KB -> Total Trie Node: 25298 nodes [mode 0]
+* Total Memory Storage: 6464 KB -> Total Trie Node: 105693 nodes [mode 1] 
+
+
 ## MultiBit Simulator 
-
-#### // TODO
-
 ```
 ./run.sh MultiBit [-t]
 ```
+* Total Trie Node: 25298 nodes
+* Total Memory Storage: 41109 KB
+
+# UniPrefixMultibit Simulator 
+
+```
+./run.sh UniPrefixMultibit [-t]
+```
+* Total Trie Node: 4040151 nodes
+* Total Memory Storage: 3295445 KB
