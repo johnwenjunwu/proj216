@@ -11,3 +11,4 @@ bgptable.txt
 # Keep sample test set
 !sample_bgptable.txt
 !sample_result.txt
+!sample_iptable.txt
