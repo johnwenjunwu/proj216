@@ -44,7 +44,7 @@
 * Total Trie Node: 25298 nodes
 * Total Memory Storage: 41109 KB
 
-# UniPrefixMultibit Simulator 
+## UniPrefixMultibit Simulator 
 
 ```
 ./run.sh UniPrefixMultibit [-t]
