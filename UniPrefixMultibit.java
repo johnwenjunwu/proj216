@@ -14,7 +14,7 @@ class UniPrefixMultibit extends Trie {
         this.root = new Node();
         this.stride = new int[] {8,8,8,8};
     }
-    
+
     private class Node {
         String prefix ;
         Node [] pointer;
@@ -22,7 +22,7 @@ class UniPrefixMultibit extends Trie {
 
         Node(){
             prefix = null;
-            pointer = new Node [(int)Math.pow(2, STRIDE)];
+            pointer = null;
             nexthoop =null;
             increaseNode();
             increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
@@ -50,7 +50,7 @@ class UniPrefixMultibit extends Trie {
                 //fetch the data
                 nextHopData = longestMatch;
             }
-            if(curNode.pointer[ipValue]==null)break;
+            if(curNode.pointer==null || curNode.pointer[ipValue]==null)break;
             memoryAccess++;//access pointer array
             curNode = curNode.pointer[ipValue];
             level++;
@@ -65,7 +65,7 @@ class UniPrefixMultibit extends Trie {
 
     }
     public String internalBestMacth(int ipValue, Node curNode){
-        if(curNode.pointer[ipValue]!=null) {
+        if(curNode.pointer!=null && curNode.pointer[ipValue]!=null) {
             // if (curNode.data.containsKey(curNode.prefix[ipValue]))
             // return curNode.data.get(curNode.prefix[ipValue]);
             if(curNode.pointer[ipValue].nexthoop!=null)
@@ -80,10 +80,13 @@ class UniPrefixMultibit extends Trie {
         int maskBits = calculateMask(fields[0]);
         String[] ipComponents = calculateIPComponent(fields[0], maskBits); // turn prefix into array of n*[child index]+[data index]
         if (maskBits == -1 || ipComponents == null) return false;
+        maskLength[maskBits]++; // record mask length distribution
         Node cur = root;
         int level =0;
         while(level<ipComponents.length-1){
             int index = Integer.valueOf(ipComponents[level]);
+            if (cur.pointer == null)
+                cur.pointer = new Node [(int)Math.pow(2, STRIDE)];
             if (cur.pointer[index]==null){
                 cur.pointer[index]= new Node();
             }
@@ -99,6 +102,8 @@ class UniPrefixMultibit extends Trie {
 
         for(int i= 0; i<((int)Math.pow(2, diff));i++){
             extend = basic+i;
+            if (cur.pointer == null)
+                cur.pointer = new Node [(int)Math.pow(2, STRIDE)];
         // for(int extend :extension(prefix)){
             if(cur.pointer[extend]==null){
                 cur.pointer[extend] = new Node();
