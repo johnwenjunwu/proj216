@@ -36,8 +36,6 @@ class MultiBit extends Trie {
         public boolean addData(String prefix, String nextHopData) {
             if (data.containsKey(prefix)) return false;
             data.put(prefix, nextHopData);
-            // increaseMemory(dataNodeSize);
-            // if (prefix != rootMatch || data.size() > 1) notAEndNode();
             return true;
         }
     }

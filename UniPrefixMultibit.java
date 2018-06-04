@@ -68,8 +68,6 @@ class UniPrefixMultibit extends Trie {
     }
     public String internalBestMacth(int ipValue, Node curNode){
         if(curNode.pointer!=null && curNode.pointer[ipValue]!=null) {
-            // if (curNode.data.containsKey(curNode.prefix[ipValue]))
-            // return curNode.data.get(curNode.prefix[ipValue]);
             if(curNode.pointer[ipValue].nexthoop!=null)
                 return curNode.pointer[ipValue].nexthoop;
         }
@@ -106,7 +104,6 @@ class UniPrefixMultibit extends Trie {
             extend = basic+i;
             if (cur.pointer == null)
                 cur.pointer = new Node [(int)Math.pow(2, stride[level])];
-        // for(int extend :extension(prefix)){
             if(cur.pointer[extend]==null){
                 cur.pointer[extend] = new Node(level+1);
                 cur.pointer[extend].prefix = prefix;
