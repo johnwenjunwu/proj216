@@ -5,27 +5,29 @@ import java.lang.reflect.InvocationTargetException;
 
 
 class UniPrefixMultibit extends Trie {
-    private static final int STRIDE = 8;
     int [] stride ;
     private Node root;
 
     public UniPrefixMultibit(String BGPTablePath, String IPTablePath) {
         super(BGPTablePath, IPTablePath);
-        this.root = new Node();
-        this.stride = new int[] {8,8,8,8};
+        this.stride = new int[super.stride.length+1]; //[8,8,8,8] -> [8,8,8,8,0]
+        System.arraycopy(super.stride, 0, this.stride, 0, super.stride.length);
+        this.root = new Node(0);
     }
 
     private class Node {
         String prefix ;
         Node [] pointer;
         String nexthoop;
+        int level;
 
-        Node(){
-            prefix = null;
-            pointer = null;
-            nexthoop =null;
+        Node(int level){
+            this.level = level;
+            this.prefix = null;
+            this.pointer = null;
+            this.nexthoop =null;
             increaseNode();
-            increaseMemory((int)Math.pow(2, STRIDE)*ptrSize+ptrSize);
+            increaseMemory((int)Math.pow(2, stride[level])*ptrSize+ptrSize);
         }
     }
 
@@ -86,9 +88,9 @@ class UniPrefixMultibit extends Trie {
         while(level<ipComponents.length-1){
             int index = Integer.valueOf(ipComponents[level]);
             if (cur.pointer == null)
-                cur.pointer = new Node [(int)Math.pow(2, STRIDE)];
+                cur.pointer = new Node [(int)Math.pow(2, stride[level])];
             if (cur.pointer[index]==null){
-                cur.pointer[index]= new Node();
+                cur.pointer[index]= new Node(level+1);
             }
             cur = cur.pointer[index];
             level++;
@@ -96,17 +98,17 @@ class UniPrefixMultibit extends Trie {
 
         String prefix = ipComponents[level];
         String strs[] = prefix.split("/");
-        int diff = STRIDE-Integer.valueOf(strs[1]);
+        int diff = stride[level]-Integer.valueOf(strs[1]);
         int basic = Integer.valueOf(strs[0])<< diff;
         int extend = basic;
 
         for(int i= 0; i<((int)Math.pow(2, diff));i++){
             extend = basic+i;
             if (cur.pointer == null)
-                cur.pointer = new Node [(int)Math.pow(2, STRIDE)];
+                cur.pointer = new Node [(int)Math.pow(2, stride[level])];
         // for(int extend :extension(prefix)){
             if(cur.pointer[extend]==null){
-                cur.pointer[extend] = new Node();
+                cur.pointer[extend] = new Node(level+1);
                 cur.pointer[extend].prefix = prefix;
                 cur.pointer[extend].nexthoop = String.join(" ", fields);
                 recordMemory();
@@ -131,16 +133,6 @@ class UniPrefixMultibit extends Trie {
         return true;
     }
 
-    public int[] extension (String prefix){
-        String strs[] = prefix.split("/");
-        int diff = STRIDE-Integer.valueOf(strs[1]);
-        int basic = Integer.valueOf(strs[0])<< diff;
-        int []res = new int [(int)Math.pow(2, diff)];
-        for(int i=0;i<(int)Math.pow(2, diff);i++){
-            res[i]=basic+i;
-        }
-        return res;
-    }
     public void display(){
 
         Queue<Node> queue = new LinkedList<>();
@@ -160,7 +152,8 @@ class UniPrefixMultibit extends Trie {
             else System.out.println(tmp.nexthoop);
 
 
-            for(int i =0;i<(int)Math.pow(2, STRIDE);i++){
+            int level = tmp.level;
+            for(int i =0;i<(int)Math.pow(2, stride[level]);i++){
 
 
                 if(tmp.pointer[i]!=null) {

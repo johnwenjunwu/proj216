@@ -1,36 +1,36 @@
 import java.util.*;
+
+
 import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 
 class MultiBit extends Trie {
-    private static final int STRIDE = 8;
+
     int [] stride ;
     private Node root;
 
-
     public MultiBit(String BGPTablePath, String IPTablePath) {
         super(BGPTablePath, IPTablePath);
-        this.root = new Node();
-        this.stride = new int[] {8,8,8,8};
+        this.stride = new int[super.stride.length]; 
+        System.arraycopy(super.stride, 0, this.stride, 0, super.stride.length);
+        this.root = new Node(0);
     }
-
-
-
-
 
     private class Node {
         String[] prefix ;
         Node [] pointer ;
         HashMap<String, String> data;
+        int level;
 
-        Node(){
-            prefix = new String [(int)Math.pow(2, STRIDE)];
-            pointer = new Node [(int)Math.pow(2, STRIDE)];
-            data = new HashMap<>();
+        Node(int level){
+            this.level= level;
+            this.prefix = new String [(int)Math.pow(2, stride[level])];
+            this.pointer = new Node [(int)Math.pow(2, stride[level])];
+            this.data = new HashMap<>();
             increaseNode();
-            increaseMemory(ptrSize*(int)Math.pow(2, STRIDE)*2);
+            increaseMemory(ptrSize*(int)Math.pow(2, stride[level])*2);
         }
 
         public boolean addData(String prefix, String nextHopData) {
@@ -97,7 +97,7 @@ class MultiBit extends Trie {
         while(level<ipComponents.length-1){
             int index = Integer.valueOf(ipComponents[level]);
             if (cur.pointer[index]==null){
-                cur.pointer[index]= new Node();
+                cur.pointer[index]= new Node(level+1);
 
             }
             cur = cur.pointer[index];
@@ -106,7 +106,7 @@ class MultiBit extends Trie {
 
         String prefix = ipComponents[level];
         String strs[] = prefix.split("/");
-        int diff = STRIDE-Integer.valueOf(strs[1]);
+        int diff = stride[level]-Integer.valueOf(strs[1]);
         int basic = Integer.valueOf(strs[0])<< diff;
 
         int extend = basic;
@@ -125,18 +125,6 @@ class MultiBit extends Trie {
         return true;
     }
 
-    public int[] extension (String prefix){
-        String strs[] = prefix.split("/");
-        int diff = STRIDE-Integer.valueOf(strs[1]);
-        int basic = Integer.valueOf(strs[0])<< diff;
-        int []res = new int [(int)Math.pow(2, diff)];
-        for(int i=0;i<(int)Math.pow(2, diff);i++){
-            res[i]=basic+i;
-        }
-        return res;
-
-
-    }
 
 
     public void display(){
@@ -151,10 +139,10 @@ class MultiBit extends Trie {
             int n = id.poll();
             System.out.println();
             System.out.println("Node:"+n);
+            System.out.println("Level"+tmp.level);
+            int level = tmp.level;
 
-
-
-            for(int i =0;i<(int)Math.pow(2, STRIDE);i++){
+            for(int i =0;i<(int)Math.pow(2, stride[level]);i++){
                 System.out.print(i);
                 System.out.print(":");
                 if(tmp.prefix[i]==null) System.out.print("NULL");
