@@ -1,16 +1,13 @@
 ## Uni-Prefix Bitmap
 (Team members.. @UCLA CS216)
 
-### See what we've done in few lines!
+### 0 See what we've done in just few lines!
 IP prefix lookup is of great importance in routing. Currently, several fancy prefix lookup algorithms (e.g. Tree Bitmap, Multibit Trie) are widely used in many real-world scenarios. We came up with a modified algorithm on the basis of Multibit Trie and Lulea called **Uni-Prefix Bitmap** to acheive better performance (fewer nodes as well as shorter lookup time). 
 
 We've implemented four different IP prefix lookup engines in JAVA: (pure) Multibit Trie, Uni-Prefix Multibit Trie, Tree Bitmap and Uni-Prefix Bitmap.
-// insert "four schemes.png" here to show different schemes
-// create a table here to show their performance
-// e.g. (# of nodes, instead of using absolute number, try ratio?)
-//  (# of levels ~ lookup time, note to mark different mode of tree bitmap and uniprefix bitmap, w/o pushback, w/ pushback, tackling w/ pseudoNullNodes)
-// (average node size)
-//  (total memory usage)
+// insert "four schemes.png" here to show different schemes, then create a table here to show their performance
+
+// e.g. (# of nodes, instead of using absolute numbers, try ratio?), (# of levels ~ lookup time, note to mark different mode of tree bitmap and uniprefix bitmap, w/o pushback, w/ pushback, tackling w/ pseudoNullNodes), (average node size), (total memory usage)
 
 ## 1 Backgrounds
 - Related Works (In brief)
