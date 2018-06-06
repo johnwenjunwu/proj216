@@ -12,8 +12,8 @@ We've implemented four different IP prefix lookup engines in JAVA: (pure) Multib
 
 ## 1 Backgrounds
 - Related Works (In brief)
-    - Unibit Trie & Multibit Trie: A unibit trie is a tree in which each node is an array containing a 0-pointer and a 1-       pointer, so it may make 32 accesses for a 32-bit prefix lookup. But multibit trie allows the number of indexing bits to change, by expanding the prefix length. Multibit trie searches faster at the cost of larger database size.
-    - Lulea (necessary?)// (WW)    
+    - A unibit trie is a tree in which each node is an array containing a 0-pointer and a 1-pointer, so it may make 32 accesses for a 32-bit prefix lookup. But multibit trie allows the number of indexing bits to change, by expanding the prefix length. Multibit trie searches faster at the cost of larger database size.
+    - Lulea is a multibit-trie scheme that uses fixed-stride trie nodes but uses bitmap compression to replace consecutive identical elements with a single value. A node bitmap (0 refers to removed positions) allows fast indexing on the compressed nodes.
     - Tree Bitmap // (ZL)
         - End Node Optimization: push back end nodes, what are the NullNodes
 
