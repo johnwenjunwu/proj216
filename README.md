@@ -1,5 +1,8 @@
 # proj216
 
+## Project Report
+See [UniPrefix_Report.md](https://github.com/johnwenjunwu/proj216/blob/master/UniPrefix_Report.md)
+
 ## Tree Bitmap Simulator
 
 * Load real BGP table to build Trie Tree and Look up 1 million IP addresses in *MillionIPAddrOutput.txt*:
