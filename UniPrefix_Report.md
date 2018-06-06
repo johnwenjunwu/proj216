@@ -6,7 +6,9 @@ IP prefix lookup is of great importance in routing. Currently, several fancy pre
 
 We've implemented four different IP prefix lookup engines in JAVA: (pure) Multibit Trie, Uni-Prefix Multibit Trie, Tree Bitmap and Uni-Prefix Bitmap.
 ![](https://github.com/johnwenjunwu/proj216/blob/master/figures/FourSchemes.png?raw=true "Four Schemes")
+
 We've run an experiment on [sample_iptable.txt](https://github.com/johnwenjunwu/proj216/blob/master/sample_iptable.txt). Results are shown as below:
+
 | Prefix Lookup Scheme | # Node  | Avg Node Size | Storage  |
 | ------------- |:-----:| --------------:|-----:|
 | Multibit Trie      | 25,349 | 1.6250 KB| 41,192 KB |
@@ -45,6 +47,7 @@ One of the optimizations of Tree Bitmap to avoid obvious waste, **end node optim
 
 In Tree Bitmap, we can only shrink all **real null nodes**, whose father only has null children nodes. The **pseudo null nodes**, whose father has both null and non-null children nodes, however, have to be kept, because data and pointers are stored separately and cannot be compressed simultaneously. There is no such worry in Uni-Prefix Bitmap as it only compresses pointers while maintaining multiple copies of prefixes.
 ![alt text](https://github.com/johnwenjunwu/proj216/blob/master/figures/Real_vs_PseudoNullNode.png?raw=true "Real vs Pseudo Null Node")
+
 Currently, each node in Uni-Prefix Bitmap has two bitmaps, one is over pointer array and one is to indicate the corresponding pointer is pointing to a prefix or a node.
 
 ## 3 Experiments, Results & Analysis
