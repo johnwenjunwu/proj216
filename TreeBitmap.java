@@ -164,6 +164,11 @@ public class TreeBitmap extends Trie {
         return standardIPComponents;
     }
 
+    @Override
+    public int countPrefix() {
+        return 0;
+    }
+
     public String internalBestMatch(String ipComponent, int stride, TreeNode node) {
         int ipValue;
         if (ipComponent.indexOf('/') != -1) {

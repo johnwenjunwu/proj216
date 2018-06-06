@@ -123,6 +123,10 @@ class MultiBit extends Trie {
         return true;
     }
 
+    @Override
+    public int countPrefix() {
+        return 0;
+    }
 
 
     public void display(){

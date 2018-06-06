@@ -130,6 +130,11 @@ class UniPrefixMultibit extends Trie {
         return true;
     }
 
+    @Override
+    public int countPrefix() {
+        return 0;
+    }
+
     public void display(){
 
         Queue<Node> queue = new LinkedList<>();

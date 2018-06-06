@@ -216,4 +216,9 @@ public class UniPrefixBitmap extends Trie {
         ipComponents[length] = prefixMask.substring(prefixMask.indexOf('/') + 1, prefixMask.length());
         return ipComponents;
     }
+
+    @Override
+    public int countPrefix() {
+        return 0;
+    }
 }
