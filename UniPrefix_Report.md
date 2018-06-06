@@ -8,13 +8,13 @@ We've implemented four different IP prefix lookup engines in JAVA: (pure) Multib
 
 // insert "four schemes.png" here to show different schemes, then create a table here to show their performance
 
-// e.g. (# of nodes, instead of using absolute numbers, try ratio?), (# of levels ~ lookup time, note to mark different mode of tree bitmap and uniprefix bitmap, w/o pushback, w/ pushback, tackling w/ pseudoNullNodes), (average node size), (total memory usage)
+// e.g. (# of nodes, instead of using absolute numbers, try ratio?), (average node size), (total memory usage)
 
 ## 1 Backgrounds
 - Related Works (In brief)
-    - Unibit Trie & Multibit Trie
-    - Lulea (necessary?)
-    - Tree Bitmap
+    - Unibit Trie & Multibit Trie // (WW)
+    - Lulea (necessary?)// (WW)
+    - Tree Bitmap // (ZL)
         - End Node Optimization: push back end nodes, what are the NullNodes
 
 ## 2 Uni-Prefix Design
@@ -22,19 +22,18 @@ The core of Uni-Prefix design is basically pushing the data (aka prefix) to node
 - How did we come up with this idea?
 - What are the benefits that this modification can bring us?
 
-### 2.1 Uni-Prefix Multibit Trie 
+### 2.1 Uni-Prefix Multibit Trie // (WW) 
 - w/o pushback hack
     - //1 figure here for illustration
         - How did we come up with the pushback hack?
 - W/ pushback hack
     - // 1 figure here as well..
 
-### 2.2 Uni-Prefix Bitmap
+### 2.2 Uni-Prefix Bitmap // (ZL)
 In order to avoid the obvious waste, we compress the pointers using bitmap + pointer array, which is pretty similar to the method used in Tree Bitmap. In Tree Bitmap, we can only shrink all **real null nodes**. The pseudo null nodes, however, have to be kept, because data and pointers are stored separately. There is no such worry in Uni-Prefix Bitmap as it only compresses pointers. 
 
 // 1 figure (actually 2 in 1) to show why tree bitmap cannot reduce pseudo null node but uniprefix bitmap can.
 
-## 3 Implementation
-## 4 Experiments, Results & Analysis
+## 3 Experiments, Results & Analysis (TODO)
 - Upsides & downsides of our design
-## 5 Conclusion
+## 4 Conclusion
