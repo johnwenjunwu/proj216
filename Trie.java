@@ -125,6 +125,8 @@ public abstract class Trie {
         memGrowth.add(memTotalStorage/8);
     }
 
+    public abstract int countPrefix();
+
     public void loadBGPTable() {
         try {
             FileInputStream inputStream = new FileInputStream(BGPTablePath);
