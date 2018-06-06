@@ -28,7 +28,8 @@ The core of Uni-Prefix design is basically pushing the data (aka prefix) to node
     - It turns out that we waste a lot storage at leaf nodes, since there is only one prefix without any pointer to other child nodes, which leads the our next optimization to reduce leaf nodes by pushing the prefix one layer back.
         
 - W/ pushback hack
-    - // 1 figure here as well..
+    - As shown in the figure below, we can push all the prefix at leaf node one layer up to replace the pointer. But we need one extra bit to note whether it's a pointer to the child node or a prefix, which can be put together with the 32-bit pointer or prefix. It allows 0 extra memory access when it's fetched with each item in the node. ![alt text](https://github.com/johnwenjunwu/proj216/blob/master/UniprefixWithPushBack.png "Original Uni-Prefix") 
+    - After this modification, we can see that all the leaf nodes is a mixed storage with pointers and prefixes with 1 extra bit. The number of nodes are exactly same as multibit trie, but node's size is only the half of before. And also, the memory access for any ip lookup is same as before.
 
 ### 2.2 Uni-Prefix Bitmap // (ZL)
 In order to avoid the obvious waste, we compress the pointers using bitmap + pointer array, which is pretty similar to the method used in Tree Bitmap. In Tree Bitmap, we can only shrink all **real null nodes**. The pseudo null nodes, however, have to be kept, because data and pointers are stored separately. There is no such worry in Uni-Prefix Bitmap as it only compresses pointers. 
