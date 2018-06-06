@@ -24,8 +24,9 @@ The core of Uni-Prefix design is basically pushing the data (aka prefix) to node
 
 ### 2.1 Uni-Prefix Multibit Trie // (WW) 
 - w/o pushback hack
-    - //1 figure here for illustration
-        - How did we come up with the pushback hack?
+    - The figure below shows the orginal optimization that we move the prefix to the next layer. In this case, we can reduce the size of each node to half, but will increase the memory access for each ip lookup by 1. ![alt text](https://github.com/johnwenjunwu/proj216/blob/master/Uniprefix.png "Original Uni-Prefix")
+    - It turns out that we waste a lot storage at leaf nodes, since there is only one prefix without any pointer to other child nodes, which leads the our next optimization to reduce leaf nodes by pushing the prefix one layer back.
+        
 - W/ pushback hack
     - // 1 figure here as well..
 
