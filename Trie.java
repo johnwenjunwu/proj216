@@ -152,6 +152,7 @@ public abstract class Trie {
             if (insertEntry(entry)) entryCount++;
 
             System.out.println(entryCount + " prefixes inserted. " + (entryCount == expEntryNum? "Match":"ERROR: Mismatch"));
+            System.out.println(countPrefix() + " prefixes are stored including duplicates");
             System.out.println("Total Trie Node: " + trieNodeNum + " nodes");
             System.out.println("Total Memory Storage: " + memTotalStorage / 8 / 1024 + " KB");
             if (verbose) {
