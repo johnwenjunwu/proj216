@@ -40,10 +40,15 @@ class MultiBit extends Trie {
         }
 
         public int countPrefix() {
-            int sum = data.size();
+            int sum = 0;
+            for (String s: prefix) {
+                if (s != null) {
+                    sum++;
+                }
+            }
             for (Node n: pointer) {
                 if (n != null) {
-                    sum += n.data.size();
+                    sum += n.countPrefix();
                 }
             }
             return sum;

@@ -29,6 +29,18 @@ class UniPrefixMultibit extends Trie {
             increaseNode();
             increaseMemory((int)Math.pow(2, stride[level])*ptrSize+ptrSize);
         }
+
+        public int countPrefix() {
+            int sum = prefix == null ? 0 : 1;
+            if (pointer != null) {
+                for (Node n : pointer) {
+                    if (n != null) {
+                        sum += n.countPrefix();
+                    }
+                }
+            }
+            return sum;
+        }
     }
 
     public boolean lookupEntry(String ip){
@@ -132,7 +144,7 @@ class UniPrefixMultibit extends Trie {
 
     @Override
     public int countPrefix() {
-        return 0;
+        return root.countPrefix();
     }
 
     public void display(){
