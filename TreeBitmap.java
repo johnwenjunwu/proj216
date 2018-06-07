@@ -51,6 +51,14 @@ public class TreeBitmap extends Trie {
             this.externalBitmapSize = (int)Math.pow(2, stride[level]);
         }
 
+        public int countPrefix() {
+            int sum = data.size();
+            for (TreeNode n: children.values()) {
+                sum += n.countPrefix();
+            }
+            return sum;
+        }
+
         public void addChild(String index, TreeNode child) {
             children.put(index, child);
             notANullNode();
@@ -166,7 +174,7 @@ public class TreeBitmap extends Trie {
 
     @Override
     public int countPrefix() {
-        return 0;
+        return rootNode.countPrefix();
     }
 
     public String internalBestMatch(String ipComponent, int stride, TreeNode node) {
