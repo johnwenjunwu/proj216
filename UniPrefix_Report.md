@@ -18,11 +18,11 @@ We've run an experiment (strides = {8, 8, 8, 8}). Results are shown as below:
 
 
 ## 1 Backgrounds
-#### Unibit Trie & Multibit Trie
+### Unibit Trie & Multibit Trie
 A [unibit trie](https://raminaji.wordpress.com/unibit-tries/) is a tree in which each node is an array containing a 0-pointer and a 1-pointer, so it may make 32 accesses for a 32-bit prefix lookup. But [multibit trie](https://raminaji.wordpress.com/multibit-tries/) allows the number of indexing bits to change, by expanding the prefix length. Multibit trie searches faster at the cost of larger database size.
 ### Lulea
 [Lulea](https://en.wikipedia.org/wiki/Lule%C3%A5_algorithm) is a multibit-trie scheme that uses fixed-stride trie nodes but uses bitmap compression to replace consecutive identical elements with a single value. A node bitmap (0 refers to removed positions) allows fast indexing on the compressed nodes.
-#### Tree Bitmap
+### Tree Bitmap
 Tree Bitmap ([eatherton2004tree](http://cseweb.ucsd.edu/~varghese/PAPERS/ccr2004.pdf)) is a high performance IP lookup algorithm. Each trie node (stride = s) has two bitmaps, one for data (internally stored prefiexes, (2^s - 1)-bit long) and one for pointers (external pointers, (2^s)-bit long), to compress these two kinds of information efficiently. 
 
 ![](https://github.com/johnwenjunwu/proj216/blob/master/figures/TreeBitmap.png?raw=true "TreeBitmap")
