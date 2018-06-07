@@ -9,12 +9,12 @@ We've implemented four different IP prefix lookup engines in JAVA: (pure) Multib
 
 We've run an experiment (strides = {8, 8, 8, 8}). Results are shown as below:
 
-| Prefix Lookup Scheme | # Node  | Avg Node Size | Storage  |
-| ------------- |:-----:| --------------:|-----:|
-| Multibit Trie      | 25,349 | 1.6250 KB| 41,192 KB |
-| Uni-Prefix Multibit Trie      | 4,049,552      |   0.8157 KB | 3,303,113 KB |
-| Tree Bitmap | 31,815      | 0.1410 KB |  4,486 KB |
-| Uni-Prefix Bitmap | 25,349      |  0.1417 KB | 3,592 KB |
+| Prefix Lookup Scheme | # Node  | Avg Node Size | Storage  | Prefixes we store |
+| ------------- |:-----:| --------------:|-----:|------:|
+| Multibit Trie      | 25,349 | 1.6250 KB| 41,192 KB | 6N |
+| Uni-Prefix Multibit Trie      | 4,049,552      |   0.8157 KB | 3,303,113 KB | 6N |
+| Tree Bitmap | 31,815      | 0.1410 KB |  4,486 KB | N |
+| Uni-Prefix Bitmap | 25,349      |  0.1417 KB | 3,592 KB | 6N |
 
 
 ## 1 Backgrounds
