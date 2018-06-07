@@ -38,6 +38,16 @@ class MultiBit extends Trie {
             data.put(prefix, nextHopData);
             return true;
         }
+
+        public int countPrefix() {
+            int sum = data.size();
+            for (Node n: pointer) {
+                if (n != null) {
+                    sum += n.data.size();
+                }
+            }
+            return sum;
+        }
     }
 
     public boolean lookupEntry(String ip){
@@ -125,7 +135,7 @@ class MultiBit extends Trie {
 
     @Override
     public int countPrefix() {
-        return 0;
+        return root.countPrefix();
     }
 
 
