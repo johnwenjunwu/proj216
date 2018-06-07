@@ -55,4 +55,10 @@ In Tree Bitmap, we can only shrink all **real null nodes**, whose father only ha
 Currently, each node in Uni-Prefix Bitmap has two bitmaps, one is over pointer array and one is to indicate the corresponding pointer is pointing to a prefix or a node.
 
 ## 3 Experiments, Results & Analysis
+### Advantages of Uni-Preifx Bitmap
+// TODO (zt)
+
+### Disadvantages of Uni-Preifx Bitmap
+Since we only use one bitmap to compress the pointers to the children, it's inevitable that we would store the same prefix for ultiple times (due to the prefix expanding). After careful calculation (under different testing data base), on average every prefix is stored for 6 times in trade of smaller node size. 
+
 ## 4 Conclusion
