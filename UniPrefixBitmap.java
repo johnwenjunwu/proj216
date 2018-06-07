@@ -48,6 +48,18 @@ public class UniPrefixBitmap extends Trie {
             this.children = null; // lazy initialization
         }
 
+        public int countPrefix() {
+            int sum = prefixValue == -1 ? 0 : 1;
+            if (children != null) {
+                for (TreeNode n: children) {
+                    if (n != null) {
+                        sum += n.countPrefix();
+                    }
+                }
+            }
+            return sum;
+        }
+
         public void addChild(String index, TreeNode child) {
             if (children == null) children = new TreeNode[ptrBitmapSize];
             children[Integer.valueOf(index)] = child;
@@ -219,6 +231,6 @@ public class UniPrefixBitmap extends Trie {
 
     @Override
     public int countPrefix() {
-        return 0;
+        return rootNode.countPrefix();
     }
 }
