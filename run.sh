@@ -27,7 +27,7 @@ echo
 echo "ClassName: MultiBit | UniPrefixMultibit | TreeBitmap | UniPrefixBitmap"
 echo
 echo "e.g. [./run.sh TreeBitmap.java] will be a valid command"
-echo "The results are saved in [${RES_FILE}]"
+echo "The results are saved in JAVA_CLASS_result.txt"
 echo "=============================================================="
 echo
 

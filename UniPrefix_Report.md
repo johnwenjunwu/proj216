@@ -5,7 +5,7 @@ IP prefix lookup is of great importance in routing. Currently, several fancy pre
 We've implemented four different IP prefix lookup engines in JAVA: (pure) Multibit Trie, Uni-Prefix Multibit Trie, Tree Bitmap and Uni-Prefix Bitmap.
 ![](https://github.com/johnwenjunwu/proj216/blob/master/figures/FourSchemes.png?raw=true "Four Schemes")
 
-We've run an experiment (strides = {8, 8, 8, 8}, [read BGP table](http://bgp.potaroo.net/as2.0/bgptable.txt) + [MillionIPAddrOutput](https://github.com/johnwenjunwu/proj216/blob/master/MillionIPAddrOutput.txt)) . Results are shown as below:
+We've run an experiment (strides = {8, 8, 8, 8}, [real BGP table](http://bgp.potaroo.net/as2.0/bgptable.txt) + [MillionIPAddrOutput](https://github.com/johnwenjunwu/proj216/blob/master/MillionIPAddrOutput.txt)) . Results are shown as below:
 
 | Prefix Lookup Scheme | # Node  |  Storage  | # Prefixes Stored|
 | ------------- |:-----:|:-----:|:------:|
