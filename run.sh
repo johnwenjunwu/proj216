@@ -9,7 +9,7 @@ BGP_TABLE=bgptable.txt
 BGP_ADDRESS=http://bgp.potaroo.net/as2.0/bgptable.txt
 
 IP_TABLE=MillionIPAddrOutput.txt
-RES_FILE=result.txt
+# RES_FILE=result.txt
 
 SAMPLE_BGP=sample_bgptable.txt
 SAMPLE_IP=sample_iptable.txt
@@ -71,7 +71,7 @@ fi
 
 # run the java executable file
 echo "Testing $1..."
-java -classpath ${TMP_DIR} ${JAVA_ENTRY} ${JAVA_CLASS} ${BGP_TABLE} ${IP_TABLE} > ${RES_FILE}
+java -classpath ${TMP_DIR} ${JAVA_ENTRY} ${JAVA_CLASS} ${BGP_TABLE} ${IP_TABLE} > ${JAVA_CLASS}"_result.txt"
 
 # compare with the sample result if necessary
 if [ "$2" == "-t" -o "$2" == "-test" ]; then
