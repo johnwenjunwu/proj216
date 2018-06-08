@@ -10,7 +10,7 @@ See [UniPrefix_Report.md](https://github.com/johnwenjunwu/proj216/blob/master/Un
 ./run.sh TreeBitmap
 ```
 
-* Load real BGP table to build Trie Tree and Look up customized IP addresses in *test.txt*:
+* Load real BGP table to build Trie Tree and Look up customized IP addresses in *sample_iptable.txt*:
 ```
 ./run.sh TreeBitmap -t
 ```
