@@ -1,3 +1,8 @@
+### Author: (in alphabetical order)
+- Wenjun Wu ()
+- Yutong Han (705025619)
+- Zhehan Li (404888352)
+- Zutian Luo (804880250)
 
 ### See what we've done in few lines!
 IP prefix lookup is of great importance in routing. Currently, several fancy prefix lookup algorithms (e.g. Tree Bitmap, Multibit Trie) are widely used in many real-world scenarios. We came up with a modified algorithm on the basis of Multibit Trie and Lulea called **Uni-Prefix Bitmap** to acheive better performance (fewer nodes as well as shorter lookup time). 
