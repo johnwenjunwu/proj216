@@ -48,7 +48,7 @@ Here we give the definitions of several terms we used in the report:
 - **Def 4.** A *pseudo null node* is a null node whose parent (i.e. an end node) has at least one non-null node as its children.
 
 In Tree Bitmap, we can only shrink all **real null nodes**, whose father only has null children nodes. The **pseudo null nodes**, whose father has both null and non-null children nodes, however, have to be kept, because data and pointers are stored separately and cannot be compressed simultaneously. There is no such worry in Uni-Prefix Bitmap as it only compresses pointers while maintaining multiple copies of prefixes.
-![alt text](https://github.com/johnwenjunwu/proj216/blob/master/figures/Real_vs_PseudoNullNode.png?raw=true "Real vs Pseudo Null Node")
+![alt text](https://github.com/johnwenjunwu/proj216/blob/master/figures/Real_vs_PseudoNullNode_NonNullNode.png?raw=true "Real vs Pseudo Null Node")
 
 Currently, each node in Uni-Prefix Bitmap has **only one** bitmap which is over pointer array. (This scheme probably need an extra bitmap to indicate the corresponding pointer is pointing to a prefix or a node. Depends on implementation.) 
 
@@ -57,7 +57,7 @@ Currently, each node in Uni-Prefix Bitmap has **only one** bitmap which is over 
 - Smaller node size
     - While each Tree Bitmap node has two bitmaps, each Uni-prefix Bitmap node has only one bitmap. Comparison between these two kinds of nodes is as below:
 ![alt text](https://github.com/johnwenjunwu/proj216/blob/master/figures/TreeBitmapNodeStructure.png?raw=true "Tree Bitmap Node")
-![alt text](https://github.com/johnwenjunwu/proj216/blob/master/figures/UniPrefixBitmapNodeStructure.png?raw=true "UniPrefix Bitmap Node")
+![alt text](https://github.com/johnwenjunwu/proj216/blob/master/figures/Uni-PrefixBitmapNodeStructure.png?raw=true "UniPrefix Bitmap Node")
 - Reduce the number of nodes by modified endnode optimization
     - Mentioned as above. Pseudo null nodes can be shrinkd using this approach.
 
