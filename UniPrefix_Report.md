@@ -47,7 +47,7 @@ Here we give the definitions of several terms we used in the report:
 - **Def 3.** A *real null node* is a null node whose parent (i.e. an end node) only has null nodes as its children.
 - **Def 4.** A *pseudo null node* is a null node whose parent (i.e. an end node) has at least one non-null node as its children.
 
-In Tree Bitmap, we can only shrink all **real null nodes**, whose father only has null children nodes. The **pseudo null nodes**, whose father has both null and non-null children nodes, however, have to be kept, because data and pointers are stored separately and cannot be compressed simultaneously. There is no such worry in Uni-Prefix Bitmap as it only compresses pointers while maintaining multiple copies of prefixes.
+In Tree Bitmap, we can only shrink all **real null nodes**. The **pseudo null nodes**, however, have to be kept, because the parent of any pseudo null node (i.e. an end node) will not be able to hold the information for its (i.e. this end node's) non-null child nodes (details refer to [eatherton2004tree](http://cseweb.ucsd.edu/~varghese/PAPERS/ccr2004.pdf)). There is no such worry in Uni-Prefix Bitmap as it only change the meaning of the pointer from a child pointer to a data pointer.
 ![alt text](https://github.com/johnwenjunwu/proj216/blob/master/figures/Real_vs_PseudoNullNode_NonNullNode.png?raw=true "Real vs Pseudo Null Node")
 
 Currently, each node in Uni-Prefix Bitmap has **only one** bitmap which is over pointer array. (This scheme probably need an extra bitmap to indicate the corresponding pointer is pointing to a prefix or a node. Depends on implementation.) 
