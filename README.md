@@ -3,6 +3,12 @@
 ## Project Report
 See [UniPrefix_Report.md](https://github.com/johnwenjunwu/proj216/blob/master/UniPrefix_Report.md)
 
+## Author: (in alphabetical order)
+- Wenjun Wu ()
+- Yutong Han (705025619)
+- Zhehan Li (404888352)
+- Zutian Luo (804880250)
+
 ## Tree Bitmap Simulator
 
 * Load real BGP table to build Trie Tree and Look up 1 million IP addresses in *MillionIPAddrOutput.txt*:
