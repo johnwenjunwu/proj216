@@ -4,7 +4,7 @@
 See [UniPrefix_Report.md](https://github.com/johnwenjunwu/proj216/blob/master/UniPrefix_Report.md)
 
 ## Author: (in alphabetical order)
-- Wenjun Wu ()
+- Wenjun Wu (105068032)
 - Yutong Han (705025619)
 - Zhehan Li (404888352)
 - Zutian Luo (804880250)
